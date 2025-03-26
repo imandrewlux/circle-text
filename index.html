@@ -3,10 +3,6 @@
   <head>
   <title>CSS Rotating Text</title>
   <meta charset="utf-8">
-  <script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous"></script>
   </head>
   <style>
     body{
@@ -178,14 +174,7 @@
   <input type="range" min="0" max="360" value="343" step="0.1" class="slider" id="Yrote"><br><br>
 
   <button class="getcode">Get Code</button>
-  <div class="code-block">
-    <div class="ex">X</div>
-    <div title="Copy Text" class="copy"><svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M20 20H160V80H180V20V0H160H20H0V20V160V180H20H80V160H20V20Z" fill="white"/>
-<rect x="70" y="70" width="160" height="160" stroke="white" stroke-width="20"/>
-</svg></div>
-    <pre><code>doom patrol.</code></pre>
-  </div>
+  
 </div>
 <div class="int-container always-open">
 	<div class="intro">
@@ -194,6 +183,14 @@
 		<br>
 	</div>
 </div>
+<div class="code-block">
+      <div class="ex">X</div>
+      <div title="Copy Text" class="copy"><svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M20 20H160V80H180V20V0H160H20H0V20V160V180H20H80V160H20V20Z" fill="white"/>
+  <rect x="70" y="70" width="160" height="160" stroke="white" stroke-width="20"/>
+  </svg></div>
+      <pre><code>doom patrol.</code></pre>
+    </div>
 </body>
 
 	<script>
@@ -202,38 +199,39 @@
     let xrote = 343;
     let dir = 'RtoL'
     let speed = 15;
+    var inputChange = ['input', 'change'];
+
     function wrapSpan(){
-      $('.convert').html(function (i, html) {
-        var chars = $.trim(html).split("");
-        return '<span>' + chars.join('</span><span>') + '</span>';
-      });
+      const textToWrap = document.querySelector('.convert').innerText;
+      var chars = textToWrap.trim().split("");
+      var textSpan = '<span>' + chars.join('</span><span>') + '</span>';
+      document.querySelector('.convert').innerHTML = textSpan;
     }
   wrapSpan();
 function addRotation( space, radii){
   let rote = 0;
-  $('.convert span').each(function(e){
-      rote = rote + space;
-      $(this).css('transform' , `rotateY(${rote}deg) translateZ(${radii}vw) ` );
+  var textSpan = document.querySelectorAll('.convert span');
+  textSpan.forEach((ele, key) => {
+    rote = rote + space;
+    ele.style.transform = `rotateY(${rote}deg) translateZ(${radii}vw) `;
   });
 }
 
 function editAnimation(dir, speed){
 
   if( dir == 'LtoR' ){
-    $('.convert').css("animation", `scrollymationLtoR ${speed}s linear infinite`);
+    document.querySelector('.convert').style.animation = `scrollymationLtoR ${speed}s linear infinite`;
   }else{
-    $('.convert').css("animation", `scrollymationRtoL ${speed}s linear infinite`);
+    document.querySelector('.convert').style.animation = `scrollymationRtoL ${speed}s linear infinite`;
   }
 }
 
 function pullCode(dir){
-  let textSpans = $('.convert')[0].innerHTML;
-  let keyFrameX = $('body').css('--roteX');
-  let keyFrameZ = $('body').css('--roteZ');
-  let scrollSpeed = $('#SSpeed').val()
-  if(dir == 'RtoL'){
-    console.log("poooooper");
-  }
+  let textSpans = document.querySelector('.convert').innerHTML;
+  let keyFrameX = window.getComputedStyle(document.body).getPropertyValue('--roteX');
+  let keyFrameZ = window.getComputedStyle(document.body).getPropertyValue('--roteZ');
+  let scrollSpeed = document.getElementById('SSpeed').value
+
   let styleSec = `<style>
   @keyframes scrollText {
       from {
@@ -261,57 +259,106 @@ function pullCode(dir){
       ${textSpanAbs}
     </p>
   </div>`
-  $('.code-block pre code')[0].innerText = `${styleSec}\n\n ${codeBit}`;
+  document.querySelector('.code-block pre code').innerText = `${styleSec}\n\n ${codeBit}`;
 }
 
 
 addRotation(space, radii);
-$(document).on('keyup', '#tField', function(){
-  $('.convert').text( $(this).val() );
+
+// when user enters text in text field
+// wrap in span, and add rotation
+const textFieldListen = function(ev){
+  document.querySelector('.convert').innerText = this.value;
   wrapSpan();
   addRotation( space, radii);
-});
+}
+document.getElementById('tField').addEventListener('keyup', textFieldListen, false);
 
-$(document).on("input change", '#cSize', function(){
-  $('.cVal').text( $(this).val() );
+
+// circle radius input
+const circleRadiusListen = function(ev){
+  document.querySelector('.cVal').innerText = this.value;
   radii = parseFloat( $(this).val() );
   addRotation(space, radii);
-} );
-$(document).on("input change", '#lSpace', function(){
-  $('.lSpaceVal').text( $(this).val() );
+}
+inputChange.forEach( function(evt) { 
+  document.getElementById('cSize').addEventListener(evt, circleRadiusListen, false)
+})
+
+// Letter spacing input
+const letterSpacingListen = function(ev){
+  document.querySelector('.lSpaceVal').innerText = this.value;
   space = parseFloat( $(this).val() );
   addRotation( space, radii);
-} );
-$(document).on("input change", '#Xrote', function(){
-  $('.XroteVal').text( $(this).val() );
+}
+inputChange.forEach( function(evt) { 
+  document.getElementById('lSpace').addEventListener(evt, letterSpacingListen, false)
+})
+
+
+// X rotation input
+const xRotationListen = function(ev){
+  document.querySelector('.XroteVal').innerText = this.value;
   xrote = parseFloat( $(this).val() );
-  $("body").css('--roteX' , `${xrote}deg`) ;
-} );
-$(document).on("input change", '#Yrote', function(){
-  $('.YroteVal').text( $(this).val() );
+  document.body.style.setProperty('--roteX', `${xrote}deg`);
+}
+inputChange.forEach( function(evt) { 
+  document.getElementById('Xrote').addEventListener(evt, xRotationListen, false)
+});
+
+
+// Y rotation input
+const yRotationListen = function(ev){
+  document.querySelector('.YroteVal').innerText = this.value;
   yrote = parseFloat( $(this).val() );
-  $("body").css('--roteZ' , `${yrote}deg`) ;
-} );
-$(document).on("input change", '#SSpeed', function(){
-  $('.SSpeedVal').text( $(this).val() );
+  document.body.style.setProperty('--roteZ', `${yrote}deg`);
+}
+inputChange.forEach( function(evt) { 
+  document.getElementById('Yrote').addEventListener(evt, yRotationListen, false)
+});
+
+
+// Scroll Speed input
+const scrollSpeedListen = function(ev){
+  document.querySelector('.SSpeedVal').innerText = this.value;
   speed = parseInt( $(this).val() );
   editAnimation(dir, speed)
-} );
-$(document).on("input", 'input[name=direction1]', function(){
-  dir = $('input[name=direction1]:checked').val();
+}
+inputChange.forEach( function(evt) { 
+  document.getElementById('SSpeed').addEventListener(evt, scrollSpeedListen, false)
+});
+
+// direction of animation
+const directionListen = function(ev){
+  dir = document.querySelector('input[name=direction1]:checked').value;
   editAnimation(dir, speed)
-} );
-$(document).on('click', '.getcode', function(){
-  $('.code-block').toggleClass("showing");
-  dir = $('input[name=direction1]:checked').val();
+}
+const directionInputs = document.querySelectorAll('input[name=direction1]');
+directionInputs.forEach(function(ev){
+  this.addEventListener('input', directionListen, false);
+});
+
+//get code button
+const getCodeListen = function(ev){
+  document.querySelector('.code-block').classList.toggle('showing');
+  dir = document.querySelector('input[name=direction1]:checked').value;
   pullCode(dir);
-} );
-$(document).on('click', '.ex', function(){
-  $('.code-block').toggleClass("showing");
-} );
-$(document).on('click', '.copy', function(){
-  navigator.clipboard.writeText( $('.code-block code')[0].innerText  );
-})
+}
+document.querySelector('.getcode').addEventListener('click', getCodeListen, false)
+
+// close the modal
+const closeModal = function(ev){
+  document.querySelector('.code-block').classList.toggle('showing');
+}
+document.querySelector('.ex').addEventListener('click', closeModal, false);
+
+//copy to clipboard
+const copyToClipboard = function(ev){
+  const codeblock = document.querySelector('.code-block code').innerText;
+  navigator.clipboard.writeText( codeblock );
+}
+document.querySelector('.copy').addEventListener('click', copyToClipboard, false);
+
 </script>
 
 
