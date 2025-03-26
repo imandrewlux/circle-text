@@ -1,0 +1,8 @@
+<svg width="13" height="5" viewBox="0 0 13 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<style type="text/css">
+     @keyframes scrollymationRtoL {
+      from {transform: rotateX(343deg) rotateZ(0deg) rotateY(360deg);}
+      to{transform: rotateX(343deg) rotateZ(0deg) rotateY(0deg);}}
+  </style>
+<path d="M10.1973 4.28027V3.16602H7.95508V2.04492H6.84082V0.923828H2.35645V2.04492H4.59863V3.16602H5.71973V4.28027H10.1973ZM12.4395 2.04492V0.923828H11.3184V2.04492H12.4395ZM2.35645 3.16602V2.04492H1.23535V3.16602H2.35645ZM11.3184 3.16602V2.04492H10.1973V3.16602H11.3184ZM1.23535 4.28027V3.16602H0.121094V4.28027H1.23535Z" fill="black"/>
+</svg>

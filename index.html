@@ -1,0 +1,321 @@
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+  <title>CSS Rotating Text</title>
+  <meta charset="utf-8">
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+  </head>
+  <style>
+    body{
+      --roteX:  343deg;
+      --roteZ:  0deg;
+    }
+    @keyframes scrollymationRtoL {
+      from {
+       /* -moz-transform: rotate3d(1, 0, 0, -17.3deg) rotateY(108deg);
+        -webkit-transform: rotate3d(1, 0, 0, -17.3deg) rotateY(108deg);*/
+        transform: rotateX(var(--roteX)) rotateZ(var(--roteZ)) rotateY(360deg);
+      }
+      to{
+       /* -moz-transform: rotate3d(1, 0, 0, -17.3deg) rotateY(-242deg);
+        -webkit-transform: rotate3d(1, 0, 0, -17.3deg) rotateY(-242deg);*/
+        transform: rotateX(var(--roteX)) rotateZ(var(--roteZ)) rotateY(0deg);
+      }
+    }
+     @keyframes scrollymationLtoR {
+      from {
+       /* -moz-transform: rotate3d(1, 0, 0, -17.3deg) rotateY(108deg);
+        -webkit-transform: rotate3d(1, 0, 0, -17.3deg) rotateY(108deg);*/
+        transform: rotateX(var(--roteX)) rotateZ(var(--roteZ)) rotateY(0deg);
+      }
+      to{
+       /* -moz-transform: rotate3d(1, 0, 0, -17.3deg) rotateY(-242deg);
+        -webkit-transform: rotate3d(1, 0, 0, -17.3deg) rotateY(-242deg);*/
+        transform: rotateX(var(--roteX)) rotateZ(var(--roteZ)) rotateY(360deg);
+      }
+    }
+    .intro{
+      min-height: calc(120vh - 206px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .int-container.always-open p.convert{
+      position: absolute;
+      width: 60%;
+      margin: 0;
+      padding: 0;
+      transform-style: preserve-3d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      -moz-animation: scrollymationRtoL 15s linear infinite;
+      -webkit-animation: scrollymationRtoL 15s linear infinite;
+      animation: scrollymationRtoL 15s linear infinite;
+     }
+     .int-container.always-open p.convert span{
+        font-size: 4.7vw;
+        line-height: 1;
+        font-weight: 900;
+        text-transform: uppercase;
+        display: inline-block;
+        position: absolute;
+     }
+     .box-controlls{
+        position: fixed;
+        width: 20%;
+        border: 1px solid #000;
+        border-radius: 20px;
+        padding: 1%;
+     }
+     .box-controlls input{
+      width: calc(100% - 4%);
+     }
+     .slider-box{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+     }
+     .slider-box input{
+      flex: 0 0 10px;
+     }
+     .code-block{
+      position: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.3s ease-in-out;
+     }
+     .code-block .ex{
+      display: block;
+      position: absolute;
+      top: 8vh;
+      right: 7vw;
+      color: white;
+      z-index: 9999;
+      font-size: 20px;
+      font-family: sans-serif;
+      border: 1px solid white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 0px;
+      cursor: pointer;
+     }
+     .code-block .copy{
+      display: block;
+      position: absolute;
+      top: 16vh;
+      right: 7vw;
+      color: white;
+      z-index: 9999;
+      font-size: 20px;
+      font-family: sans-serif;
+      cursor: pointer;
+     }
+     .code-block .copy svg{
+      width: 30px;
+      height: 30px;
+     }
+     .code-block pre{
+      width: 90vw;
+      height: 90vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 20px;
+      color: #fff;
+      padding: 50px;
+      box-sizing: border-box;
+      margin: 0;
+     }
+
+     .code-block.showing{
+      opacity: 1;
+      pointer-events: auto;
+     }
+
+  </style>
+  <body>
+<div class="box-controlls">
+  <label for="tField">Enter Your Text</label><br>
+  <input type="text" id="tField" name="text-field" value="" ><br><br>
+  <div class="radio-select">
+    <div class="slider-box">
+      <label for="ltor">Left to Right</label>
+      <input type="radio" name="direction1" value="LtoR" id="ltor"><br>
+    </div>
+    <div class="slider-box">
+      <label for="ltor">Right to Left</label>
+      <input type="radio" name="direction1" value="RtoL" id="rtol" checked><br><br>
+    </div>
+  </div>
+  
+
+  <label for="SSpeed">Scroll Speed: <span class="SSpeedVal">15</span>sec</label><br>
+  <input type="range" min="1" max="50" value="15" step="1" class="slider" id="SSpeed"><br><br>
+
+  <label for="cSize">Circle Radius: <span class="cVal">50</span>%</label><br>
+  <input type="range" min="0" max="50" value="25" step="0.1" class="slider" id="cSize"><br><br>
+
+  <label for="lSpace">Space Between Letters: <span class="lSpaceVal">9</span>°</label><br>
+  <input type="range" min="0" max="360" value="9" step="0.1" class="slider" id="lSpace"><br><br>
+
+  <label for="Xrote">X Rotation: <span class="XroteVal">343</span>°</label><br>
+  <input type="range" min="0" max="360" value="343" step="0.1" class="slider" id="Xrote"><br><br>
+
+  <label for="Yrote">Y Rotation: <span class="YroteVal">343</span>°</label><br>
+  <input type="range" min="0" max="360" value="343" step="0.1" class="slider" id="Yrote"><br><br>
+
+  <button class="getcode">Get Code</button>
+  <div class="code-block">
+    <div class="ex">X</div>
+    <div title="Copy Text" class="copy"><svg width="240" height="240" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M20 20H160V80H180V20V0H160H20H0V20V160V180H20H80V160H20V20Z" fill="white"/>
+<rect x="70" y="70" width="160" height="160" stroke="white" stroke-width="20"/>
+</svg></div>
+    <pre><code>doom patrol.</code></pre>
+  </div>
+</div>
+<div class="int-container always-open">
+	<div class="intro">
+
+		<p class="convert">Circle Text</p>
+		<br>
+	</div>
+</div>
+</body>
+
+	<script>
+    let space = 9;
+    let radii = 20;
+    let xrote = 343;
+    let dir = 'RtoL'
+    let speed = 15;
+    function wrapSpan(){
+      $('.convert').html(function (i, html) {
+        var chars = $.trim(html).split("");
+        return '<span>' + chars.join('</span><span>') + '</span>';
+      });
+    }
+  wrapSpan();
+function addRotation( space, radii){
+  let rote = 0;
+  $('.convert span').each(function(e){
+      rote = rote + space;
+      $(this).css('transform' , `rotateY(${rote}deg) translateZ(${radii}vw) ` );
+  });
+}
+
+function editAnimation(dir, speed){
+
+  if( dir == 'LtoR' ){
+    $('.convert').css("animation", `scrollymationLtoR ${speed}s linear infinite`);
+  }else{
+    $('.convert').css("animation", `scrollymationRtoL ${speed}s linear infinite`);
+  }
+}
+
+function pullCode(dir){
+  let textSpans = $('.convert')[0].innerHTML;
+  let keyFrameX = $('body').css('--roteX');
+  let keyFrameZ = $('body').css('--roteZ');
+  let scrollSpeed = $('#SSpeed').val()
+  if(dir == 'RtoL'){
+    console.log("poooooper");
+  }
+  let styleSec = `<style>
+  @keyframes scrollText {
+      from {
+        -moz-transform: rotateX(${keyFrameX}) rotateZ(${keyFrameZ}) rotateY(360deg);
+        -webkit-transform: rotateX(${keyFrameX}) rotateZ(${keyFrameZ}) rotateY(360deg);
+        transform: rotateX(${keyFrameX}) rotateZ(${keyFrameZ}) rotateY(360deg);
+      }
+      to{
+        -moz-transform: rotateX(${keyFrameX}) rotateZ(${keyFrameZ}) rotateY(0deg);
+        -webkit-transform: rotateX(${keyFrameX}) rotateZ(${keyFrameZ}) rotateY(0deg);
+        transform: rotateX(${keyFrameX}) rotateZ(${keyFrameZ}) rotateY(0deg);
+      }
+    }
+  </style>`
+  let textSpanWithBreak = textSpans.replaceAll('</span>', '</span>\n\t');
+  let textSpanAbs = textSpanWithBreak.replaceAll('<span style="', '<span style="position:absolute;');
+  let codeBit = `<div>
+    <p  style="transform-style: preserve-3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -moz-animation: scrollText ${scrollSpeed}s linear infinite;
+    -webkit-animation: scrollText ${scrollSpeed}s linear infinite;
+    animation: scrollText ${scrollSpeed}s linear infinite;">
+      ${textSpanAbs}
+    </p>
+  </div>`
+  $('.code-block pre code')[0].innerText = `${styleSec}\n\n ${codeBit}`;
+}
+
+
+addRotation(space, radii);
+$(document).on('keyup', '#tField', function(){
+  $('.convert').text( $(this).val() );
+  wrapSpan();
+  addRotation( space, radii);
+});
+
+$(document).on("input change", '#cSize', function(){
+  $('.cVal').text( $(this).val() );
+  radii = parseFloat( $(this).val() );
+  addRotation(space, radii);
+} );
+$(document).on("input change", '#lSpace', function(){
+  $('.lSpaceVal').text( $(this).val() );
+  space = parseFloat( $(this).val() );
+  addRotation( space, radii);
+} );
+$(document).on("input change", '#Xrote', function(){
+  $('.XroteVal').text( $(this).val() );
+  xrote = parseFloat( $(this).val() );
+  $("body").css('--roteX' , `${xrote}deg`) ;
+} );
+$(document).on("input change", '#Yrote', function(){
+  $('.YroteVal').text( $(this).val() );
+  yrote = parseFloat( $(this).val() );
+  $("body").css('--roteZ' , `${yrote}deg`) ;
+} );
+$(document).on("input change", '#SSpeed', function(){
+  $('.SSpeedVal').text( $(this).val() );
+  speed = parseInt( $(this).val() );
+  editAnimation(dir, speed)
+} );
+$(document).on("input", 'input[name=direction1]', function(){
+  dir = $('input[name=direction1]:checked').val();
+  editAnimation(dir, speed)
+} );
+$(document).on('click', '.getcode', function(){
+  $('.code-block').toggleClass("showing");
+  dir = $('input[name=direction1]:checked').val();
+  pullCode(dir);
+} );
+$(document).on('click', '.ex', function(){
+  $('.code-block').toggleClass("showing");
+} );
+$(document).on('click', '.copy', function(){
+  navigator.clipboard.writeText( $('.code-block code')[0].innerText  );
+})
+</script>
+
+
+
+
+
+
