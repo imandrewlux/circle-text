@@ -278,7 +278,7 @@ document.getElementById('tField').addEventListener('keyup', textFieldListen, fal
 // circle radius input
 const circleRadiusListen = function(ev){
   document.querySelector('.cVal').innerText = this.value;
-  radii = parseFloat( $(this).val() );
+  radii = parseFloat( this.value );
   addRotation(space, radii);
 }
 inputChange.forEach( function(evt) { 
@@ -288,7 +288,7 @@ inputChange.forEach( function(evt) {
 // Letter spacing input
 const letterSpacingListen = function(ev){
   document.querySelector('.lSpaceVal').innerText = this.value;
-  space = parseFloat( $(this).val() );
+  space = parseFloat( this.value );
   addRotation( space, radii);
 }
 inputChange.forEach( function(evt) { 
@@ -299,7 +299,7 @@ inputChange.forEach( function(evt) {
 // X rotation input
 const xRotationListen = function(ev){
   document.querySelector('.XroteVal').innerText = this.value;
-  xrote = parseFloat( $(this).val() );
+  xrote = parseFloat( this.value );
   document.body.style.setProperty('--roteX', `${xrote}deg`);
 }
 inputChange.forEach( function(evt) { 
@@ -310,7 +310,7 @@ inputChange.forEach( function(evt) {
 // Y rotation input
 const yRotationListen = function(ev){
   document.querySelector('.YroteVal').innerText = this.value;
-  yrote = parseFloat( $(this).val() );
+  yrote = parseFloat( this.value );
   document.body.style.setProperty('--roteZ', `${yrote}deg`);
 }
 inputChange.forEach( function(evt) { 
@@ -321,7 +321,7 @@ inputChange.forEach( function(evt) {
 // Scroll Speed input
 const scrollSpeedListen = function(ev){
   document.querySelector('.SSpeedVal').innerText = this.value;
-  speed = parseInt( $(this).val() );
+  speed = parseInt( this.value );
   editAnimation(dir, speed)
 }
 inputChange.forEach( function(evt) { 
